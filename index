@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cálculo de Gotejamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1e90ff;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label, select, input {
+      display: block;
+      margin-top: 10px;
+      width: 100%;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      background: #e6f7ff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #b3e0ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Gotejamento</h1>
+  <div class="container">
+    <label for="volume">Volume (mL):</label>
+    <input type="number" id="volume" placeholder="Ex: 500" required />
+
+    <label for="tempo">Tempo (horas):</label>
+    <input type="number" id="tempo" placeholder="Ex: 8" required />
+
+    <label for="tipo">Tipo de Equipo:</label>
+    <select id="tipo">
+      <option value="20">Macrogotas (20 gotas/mL)</option>
+      <option value="60">Microgotas (60 gotas/mL)</option>
+    </select>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div class="result" id="resultado" style="display: none;"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      const volume = parseFloat(document.getElementById("volume").value);
+      const tempoHoras = parseFloat(document.getElementById("tempo").value);
+      const fator = parseInt(document.getElementById("tipo").value);
+      const resultadoDiv = document.getElementById("resultado");
+
+      if (isNaN(volume) || isNaN(tempoHoras) || tempoHoras === 0) {
+        resultadoDiv.innerHTML = "<strong>Preencha todos os campos corretamente.</strong>";
+        resultadoDiv.style.display = "block";
+        return;
+      }
+
+      const tempoMin = tempoHoras * 60;
+      const gotasPorMin = Math.round((volume * fator) / tempoMin);
+
+      resultadoDiv.style.display = "block";
+      resultadoDiv.innerHTML = `
+        <strong>Resultado:</strong><br>
+        ${gotasPorMin} gotas por minuto<br><br>
+        <strong>Cálculo:</strong><br>
+        Gotas/min = (Volume × Fator) ÷ Tempo<br>
+        Gotas/min = (${volume} × ${fator}) ÷ (${tempoMin})<br>
+        Gotas/min = ${volume * fator} ÷ ${tempoMin}<br>
+        Gotas/min = <strong>${gotasPorMin} gotas/min</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
